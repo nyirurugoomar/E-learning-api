@@ -1,6 +1,7 @@
 import { Controller,Get,Post,Body, Param,Put, Delete } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { Course } from './schemas/course.schema';
+import { CreateCourseDto } from './dto/create-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -15,9 +16,9 @@ export class CourseController {
     @Post()
     async createCourse(
         @Body()
-        course: Course,
+        createCourse:CreateCourseDto
         ): Promise<{ message: string; course: Course }>{
-            return await this.courseService.createCourse(course);
+            return await this.courseService.createCourse(createCourse);
         }
 
 
