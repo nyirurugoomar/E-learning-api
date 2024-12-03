@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Student } from './schemas/student.schema';
 import mongoose from 'mongoose';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { CreatedStudentDto } from './dto/create-student.dto';
 
 @Injectable()
 export class StudentService {
@@ -20,9 +21,13 @@ export class StudentService {
         return students;
     }
 
-    async createStudent(student: Student): Promise<Student> {
+    async createStudent(student: CreatedStudentDto): Promise<{message:string;student:Student}> {
         const createdStudent = await this.studentModel.create(student)
-        return createdStudent
+        
+        return{
+            message:'Student created successfully',
+            student:createdStudent
+        }
     } 
 
     async getStudentById(id: string): Promise<Student> {
@@ -45,7 +50,15 @@ export class StudentService {
 
 
     async deleteStudentById(id: string): Promise<any> {
-        return await this.studentModel.findByIdAndDelete(id)
+        const deleteStudent =  await this.studentModel.findByIdAndDelete(id)
+
+        if(!deleteStudent){
+            throw new BadRequestException('Student not found')
+        }
+        return{
+            message:'Student deleted successfully',
+            student:deleteStudent
+        }
     }
 
     

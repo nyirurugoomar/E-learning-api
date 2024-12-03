@@ -34,8 +34,8 @@ export class StudentController {
     async createStudent(
         @Body()
         student: CreatedStudentDto,
-        ): Promise<Student>{
-        return await this.studentService.createStudent(student);
+        ){
+        return  this.studentService.createStudent(student);
     }
 
     @Get(':id')
