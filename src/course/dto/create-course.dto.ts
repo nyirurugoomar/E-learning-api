@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber, IsArray, ArrayNotEmpty, IsMongoId } from 'class-validator';
 
 
 export class CreateCourseDto{
@@ -36,9 +36,11 @@ export class CreateCourseDto{
     })
     price: number;
 
-    @IsNotEmpty()
+    @ArrayNotEmpty()
     @IsString()
+    @IsArray()
     @ApiProperty({})
-    lectures: string;
+    @IsMongoId({ each: true })
+    lectures: string[];
 
 }

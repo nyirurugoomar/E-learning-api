@@ -37,9 +37,10 @@ export class Course{
     })
     price:number;
 
-    @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Lecture' }])
+
     @ApiProperty({})
-    lectures: Lecture[];
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Lecture' }] })
+  lectures: mongoose.Types.ObjectId[];
 
 
 }

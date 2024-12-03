@@ -18,27 +18,27 @@ export class LectureService {
         const lectures = await this.lectureModel.find()
         return lectures;
     }
-   
-    async createLecture(lectureDto: CreateLectureDto): Promise<{ message: string; lecture: Lecture }> {
-        // Validate if the course exists
-        const courseExists = await this.lectureModel.db.collection('courses').findOne({
-            _id: new mongoose.Types.ObjectId(lectureDto.course),
-        });
-    
-        if (!courseExists) {
-            throw new Error('Course not found');
-        }
-    
-        const createdLecture = await this.lectureModel.create({
-            ...lectureDto,
-            course: new mongoose.Types.ObjectId(lectureDto.course),
-        });
-    
+
+    async createLecture(lecture: CreateLectureDto):Promise<{message:string; lecture:Lecture}>{
+        const createdLecture = await this.lectureModel.create(lecture);
         return {
             message: 'Lecture created successfully!',
             lecture: createdLecture,
         };
     }
+   
+    // async createLecture(lectureDto: CreateLectureDto): Promise<{ message: string; lecture: Lecture }> {
+        
+    //     const createdLecture = await this.lectureModel.create({
+    //         ...lectureDto,
+    //         course: new mongoose.Types.ObjectId(lectureDto.course),
+    //     });
+    
+    //     return {
+    //         message: 'Lecture created successfully!',
+    //         lecture: createdLecture,
+    //     };
+    // }
 
 async getCourseById(id:string): Promise<Lecture>{
     if (!mongoose.Types.ObjectId.isValid(id)) {
