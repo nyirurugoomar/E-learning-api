@@ -7,20 +7,21 @@ import { CreateLectureDto } from './dto/create-lecture.dto';
 
 @Injectable()
 export class LectureService {
+    [x: string]: any;
     constructor(
         @InjectModel(Lecture.name)
-        private courseModel: mongoose.Model<Lecture>,
+        private lectureModel: mongoose.Model<Lecture>,
         
     ){}
 
     async getAllLectures(): Promise<Lecture[]> {
-        const lectures = await this.courseModel.find()
+        const lectures = await this.lectureModel.find()
         return lectures;
     }
    
     async createLecture(lectureDto: CreateLectureDto): Promise<{ message: string; lecture: Lecture }> {
         // Validate if the course exists
-        const courseExists = await this.courseModel.db.collection('courses').findOne({
+        const courseExists = await this.lectureModel.db.collection('courses').findOne({
             _id: new mongoose.Types.ObjectId(lectureDto.course),
         });
     
@@ -28,7 +29,7 @@ export class LectureService {
             throw new Error('Course not found');
         }
     
-        const createdLecture = await this.courseModel.create({
+        const createdLecture = await this.lectureModel.create({
             ...lectureDto,
             course: new mongoose.Types.ObjectId(lectureDto.course),
         });
@@ -43,12 +44,32 @@ async getCourseById(id:string): Promise<Lecture>{
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('Invalid ID format.');
     }
-    const lecture = await this.courseModel.findById(id)
+    const lecture = await this.lectureModel.findById(id)
 
     if(!lecture){
         throw new BadRequestException('Lecture not found.');
     }
     return lecture;
+}
+
+async updateLecture(id:string, lecture:Lecture): Promise<Lecture>{
+    return this.lectureModel.findByIdAndUpdate(id, lecture,
+        {
+            new:true,
+            runValidators:true
+        })
+}
+
+async deleteLectureById(id:string): Promise<any>{
+    const deleteLecture = await this.lectureModel.findByIdAndDelete(id)
+
+    if(!deleteLecture){
+        throw new BadRequestException('Lecture not found.');
+    }
+    return{
+        message: 'Lecture deleted successfully!',
+        lecture:deleteLecture,
+    }
 }
 
     

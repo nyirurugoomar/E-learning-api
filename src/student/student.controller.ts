@@ -12,9 +12,12 @@ export class StudentController {
     @Get()
     @ApiOperation({summary:'Fetch list of student'})
     @ApiResponse({
+        type:Student,
         status: 200,
         description: 'List of student fetched successfully',
+        isArray:true
       })
+      
       @ApiNotFoundResponse({ description: 'Fail to fetch list of student' })
     async getAllStudents(): Promise<Student[]>{
         return await this.studentService.getAllStudents();

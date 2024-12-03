@@ -2,6 +2,8 @@ import { Controller,Get,Post,Body, Param,Put, Delete } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { Course } from './schemas/course.schema';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { UpdateCourseDto } from './dto/update-course.dto';
 
 @Controller('course')
 export class CourseController {
@@ -9,20 +11,35 @@ export class CourseController {
 
 
     @Get()
+    @ApiOperation({summary:'Fetch list of courses'})
+    @ApiResponse({
+        status: 200,
+        description: 'List of courses fetched successfully',
+      })
+      @ApiNotFoundResponse({description:'Fail to fetch list of courses'})
     async getAllCourses(): Promise<Course[]>{
         return await this.courseService.getAllCourses();
     }
 
     @Post()
+    @ApiOperation({summary:'Create course'})
+    @ApiResponse({
+        status: 201,
+        description: 'Course created successfully',
+      })
+      @ApiNotFoundResponse({description:'Fail to create of courses'})
     async createCourse(
         @Body()
         createCourse:CreateCourseDto
         ): Promise<{ message: string; course: Course }>{
             return await this.courseService.createCourse(createCourse);
         }
-
-
       @Get(':id')
+      @ApiOperation({summary:'Get course by id'})
+      @ApiResponse({
+        status:201
+      })
+      @ApiNotFoundResponse({description:'Fail to get course by id'})
         async getCourse(
             @Param('id')
             id:string,
@@ -32,6 +49,16 @@ export class CourseController {
 
 
         @Put(':id')
+        @ApiOperation({summary:'Update course'})
+        @ApiResponse({
+            description:'Course updated successfully',
+            status:201
+        })
+        @ApiOkResponse({
+            type:UpdateCourseDto,
+            isArray:true
+        })
+        @ApiNotFoundResponse({description:'Fail to update course'})
         async updateCourse(
             @Param('id')
             id:string,
@@ -42,6 +69,12 @@ export class CourseController {
         }
 
         @Delete(':id')
+        @ApiOperation({summary:'Delete course'})
+        @ApiResponse({
+            description:'Course deleted successfully',
+            status:200
+        })
+        @ApiNotFoundResponse({description:'Fail to delete course'})
         async deleteCourse(
             @Param('id')
             id: string,

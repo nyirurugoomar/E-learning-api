@@ -38,6 +38,7 @@ export class CreateCourseDto{
 
     @IsNotEmpty()
     @IsString()
+    @ApiProperty({})
     lectures: string;
 
 }
