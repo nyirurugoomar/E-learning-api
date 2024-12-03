@@ -1,11 +1,15 @@
-import { Controller,Get,Post,Body, Param,Put, Delete } from '@nestjs/common';
+import { Controller,Get,Post,Body, Param,Put, Delete, UseGuards } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { Course } from './schemas/course.schema';
 import { CreateCourseDto } from './dto/create-course.dto';
-import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateCourseDto } from './dto/update-course.dto';
+import { AuthGuard } from '../admin/guard/auth.guard';
 
+
+@ApiBearerAuth()
 @Controller('course')
+@UseGuards(AuthGuard)
 export class CourseController {
     constructor(private courseService: CourseService){}
 

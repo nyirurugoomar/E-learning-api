@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { Student } from './schemas/student.schema';
 import { CreatedStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { AuthGuard } from '../admin/guard/auth.guard';
 
+@ApiBearerAuth()
 @Controller('students')
+@UseGuards(AuthGuard)
 export class StudentController {
     constructor(private studentService: StudentService ){}
 

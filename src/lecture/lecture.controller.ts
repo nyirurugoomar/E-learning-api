@@ -1,11 +1,14 @@
-import { Controller,Get,Post,Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller,Get,Post,Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { LectureService } from './lecture.service';
 import { Lecture } from './schemas/lecture.schema';
 import { CreateLectureDto } from './dto/create-lecture.dto';
-import { ApiNotFoundResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiNotFoundResponse, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UpdateStudentDto } from './dto/update-lecture.dto';
+import { AuthGuard } from '../admin/guard/auth.guard';
 
+@ApiBearerAuth()
 @Controller('lecture')
+@UseGuards(AuthGuard)
 export class LectureController {
     constructor(private lectureService:LectureService){}
 
