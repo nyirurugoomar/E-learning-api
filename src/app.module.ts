@@ -7,9 +7,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CourseModule } from './course/course.module';
 import { LectureModule } from './lecture/lecture.module';
 import { AdminModule } from './admin/admin.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        ttl: 5000,
+        limit: 3,
+      }
+    ]),
     ConfigModule.forRoot({
        envFilePath:'.env',
        isGlobal:true
