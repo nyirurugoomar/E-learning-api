@@ -27,20 +27,9 @@ export class LectureService {
         };
     }
    
-    // async createLecture(lectureDto: CreateLectureDto): Promise<{ message: string; lecture: Lecture }> {
-        
-    //     const createdLecture = await this.lectureModel.create({
-    //         ...lectureDto,
-    //         course: new mongoose.Types.ObjectId(lectureDto.course),
-    //     });
     
-    //     return {
-    //         message: 'Lecture created successfully!',
-    //         lecture: createdLecture,
-    //     };
-    // }
 
-async getCourseById(id:string): Promise<Lecture>{
+async getLectureById(id:string): Promise<Lecture>{
     if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('Invalid ID format.');
     }

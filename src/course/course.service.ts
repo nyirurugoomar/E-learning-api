@@ -34,7 +34,7 @@ export class CourseService {
         }
         const course = await this.courseModel
             .findById(id)
-            .populate('lectures') // Populating lectures when fetching course by ID
+            .populate('lectures') 
             .exec();
 
         if (!course) {
